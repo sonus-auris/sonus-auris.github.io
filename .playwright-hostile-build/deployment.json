@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "repository": "sonus-auris/sonus-auris-site.web",
+  "commitSha": null,
+  "refName": "local",
+  "sourceUrl": null,
+  "buildEnvironment": "local"
+}
