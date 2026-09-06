@@ -3,6 +3,7 @@ dist/
 .output/
 artifacts/
 artifacts/
+/public/owls/vendor/
 
 # dependencies
 node_modules/
