@@ -18,12 +18,23 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "lint:ores": "if [ -f .ores-lint/lint.sh ]; then sh .ores-lint/lint.sh; else echo 'ores-lint not installed'; fi",
+    "prepublishOnly": "npm run lint:ores",
+    "prebuild": "npm run lint:ores"
   },
   "dependencies": {
     "astro": "^7.0.7"
   },
   "devDependencies": {
     "@playwright/test": "1.56.1"
+  },
+  "oresLint": {
+    "note": "Declared, not installed. ores-lint resolves these from a global install - see .ores-lint/README.md",
+    "requires": {
+      "eslint": ">=9",
+      "typescript-eslint": ">=8 (optional; without it .ts files are skipped)"
+    },
+    "install": "npm i -g eslint typescript-eslint"
   }
 }
