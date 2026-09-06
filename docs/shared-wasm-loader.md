@@ -6,8 +6,8 @@ Account and download links start fetch-only preparation after 150 ms of sustaine
 
 Pinned inputs:
 
-- `owls-interfaces`: `b0e687c88b652d25964c041e2fdd0222f512fddd`
-- `owls-web-loader`: `3b92396e34ffd0ba6411261957e47dd62cf3b4a4`
+- `owls-interfaces`: `231510f5d01046af657be42a5d4215be12622042`
+- `owls-web-loader`: `deae23537d27aed94bdc2510649f99393379a617`
 - SHA-256: `93a44bbb96c751218e4c00d479e4c14358122a389acca16205b1e4d0dc5f9476`
 
 Requests are credentialless. No account state, cookies, form contents, tokens, or private endpoints are sent. The pilot proves coordinator integration and verified intent preparation; it does not claim that a running runtime survives navigation or that different top-level sites share one universal browser cache.
