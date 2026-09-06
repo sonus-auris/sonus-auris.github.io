@@ -6,7 +6,7 @@ import { test } from 'node:test';
 const dist = path.resolve('dist');
 const productionOrigin = 'https://sonusauris.app';
 const footerScriptUrl = 'https://ores-chat.github.io/components/v1/ores-chat-footer-link.js';
-const footerScriptIntegrity = 'sha256-jtetSlJDWLAWg2+zQIZGUX71OYlIKkZ9sbPnFMup5SE=';
+const footerScriptIntegrity = 'sha256-PcjdZ659Rfs/5n5kNR3v/GK4dd0KTyHjh0gY7o/Z/kc=';
 const generatedOwlsScript = /^\/_astro\/page\.[A-Za-z0-9_-]+\.js$/;
 const enforcedDirectives = new Map([
   ['default-src', ["'self'"]],
