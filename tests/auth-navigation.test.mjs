@@ -47,7 +47,7 @@ test("ORES Chat is an integrity-pinned footer-only enhancement without React", (
   assert.match(footerSource, /https:\/\/ores-chat\.github\.io\/chat\/\?context=sonus-auris/);
   assert.doesNotMatch(navSource, /<ores-chat-footer-link/);
   assert.match(layoutSource, /https:\/\/ores-chat\.github\.io\/components\/v1\/ores-chat-footer-link\.js/);
-  assert.match(layoutSource, /integrity="sha256-jtetSlJDWLAWg2\+zQIZGUX71OYlIKkZ9sbPnFMup5SE="/);
+  assert.match(layoutSource, /integrity="sha256-PcjdZ659Rfs\/5n5kNR3v\/GK4dd0KTyHjh0gY7o\/Z\/kc="/);
   assert.doesNotMatch(
     JSON.stringify({ ...packageJson.dependencies, ...packageJson.devDependencies }),
     /"react(?:-dom)?"/i,
