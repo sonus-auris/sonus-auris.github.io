@@ -27,9 +27,11 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
 // in `_headers` for a future CDN/origin migration and must not be represented as
 // active response headers today.
 //
-// The only client JavaScript is the exact, integrity-pinned ORES Chat footer
-// component. Link mode performs no API connection and retains a normal anchor
-// fallback. Keep this policy aligned with `public/_headers`,
+// The only external client JavaScript is the exact, integrity-pinned ORES Chat
+// footer component. The OWLS bootstrap and its verified runtime assets are
+// same-origin. `connect-src 'self'` permits only the local release schema and
+// canary fetches after user intent; no third-party API destination is allowed.
+// Keep this policy aligned with `public/_headers`,
 // `tests/security-metadata.test.mjs`, and the independent deployed-runtime
 // browser gates in sonus-auris-e2e.
 const contentSecurityPolicy = [
@@ -41,7 +43,7 @@ const contentSecurityPolicy = [
   "font-src 'self'",
   "img-src 'self' data:",
   "media-src 'self' blob:",
-  "connect-src 'none'",
+  "connect-src 'self'",
   "frame-src 'none'",
   "worker-src 'none'",
   "manifest-src 'self'",
@@ -98,7 +100,7 @@ const fontFaceCss = `@font-face {
       is:inline
       type="module"
       src="https://ores-chat.github.io/components/v1/ores-chat-footer-link.js"
-      integrity="sha256-jtetSlJDWLAWg2+zQIZGUX71OYlIKkZ9sbPnFMup5SE="
+      integrity="sha256-PcjdZ659Rfs/5n5kNR3v/GK4dd0KTyHjh0gY7o/Z/kc="
       crossorigin="anonymous"
     ></script>
   </head>
