@@ -12,12 +12,28 @@ permissions:
 jobs:
   verify:
     runs-on: ubuntu-24.04
+    timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: '22.14.0'
           cache: npm
       - run: npm ci
       - run: npm run build
-      - run: node --test tests/owls-loader.test.mjs
+      - name: Verify static delivery and intent lifecycle
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          { git rev-parse HEAD; node --version; } > evidence/versions.txt
+          node --test tests/owls-loader.test.mjs tests/owls-intent-registry.test.mjs | tee evidence/owls.tap
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: owls-consumer-${{ github.sha }}
+          path: evidence/
+          if-no-files-found: error
+          retention-days: 30
