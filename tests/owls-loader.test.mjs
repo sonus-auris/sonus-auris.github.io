@@ -5,7 +5,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 
 const interfaces = '231510f5d01046af657be42a5d4215be12622042';
-const loader = 'deae23537d27aed94bdc2510649f99393379a617';
+const loader = '214b2e94eb03f290ba90051012a74681c41e1f05';
 const digest = '93a44bbb96c751218e4c00d479e4c14358122a389acca16205b1e4d0dc5f9476';
 const repositoryRoot = fileURLToPath(new URL('../', import.meta.url));
 const source = (path) => readFile(new URL(`../${path}`, import.meta.url), 'utf8');
@@ -77,6 +77,7 @@ test('static build contains the bootstrap and verified same-origin runtime', asy
 
   const vendor = join(dist, 'owls', 'vendor');
   await Promise.all([
+    access(join(dist, 'owls', 'intent-registry.mjs')),
     access(join(vendor, 'owls-interfaces', 'index.mjs')),
     access(join(vendor, 'owls-interfaces', 'schemas', 'release.schema.json')),
     access(join(vendor, 'owls-web-loader', 'src', 'coordinator.mjs')),

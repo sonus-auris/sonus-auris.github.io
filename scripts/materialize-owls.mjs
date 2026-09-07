@@ -20,7 +20,7 @@ const sources = [
   {
     owner: 'ores-wasm-loaders',
     repo: 'owls-web-loader',
-    commit: 'deae23537d27aed94bdc2510649f99393379a617',
+    commit: '214b2e94eb03f290ba90051012a74681c41e1f05',
     files: [
       { path: 'src/coordinator.mjs', blob: 'ce49605849c2cd38451dcc6ca5a66bef97ee7d97' },
       { path: 'src/adapters.mjs', blob: 'db7a70ac91acd6463fdfa9d5366b1cada8c05aea' },

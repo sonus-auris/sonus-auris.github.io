@@ -1,5 +1,7 @@
+import { createIntentRegistry } from './intent-registry.mjs';
+
 const INTERFACES_COMMIT = '231510f5d01046af657be42a5d4215be12622042';
-const LOADER_COMMIT = 'deae23537d27aed94bdc2510649f99393379a617';
+const LOADER_COMMIT = '214b2e94eb03f290ba90051012a74681c41e1f05';
 const PROBE_SHA256 = '93a44bbb96c751218e4c00d479e4c14358122a389acca16205b1e4d0dc5f9476';
 
 const parameters = new URL(import.meta.url).searchParams;
@@ -73,28 +75,30 @@ const release = coordinator.register({
 
 const key = releaseKey(release);
 const adapter = new RawWasmAdapter();
-const installed = new WeakSet();
-const disposers = new Set();
+const intentRegistry = createIntentRegistry({
+  root: document,
+  selector: triggerSelector,
+  install: (element) => prepareOnIntent(element, coordinator, key, {
+    dwellMs: 150,
+    exitGraceMs: 150,
+    onOutcome: (outcome) => emit('ores-wasm-loader:prepared', { appId, outcome }),
+    onError: (error) => emit('ores-wasm-loader:error', {
+      appId,
+      phase: 'prepare',
+      name: error?.name ?? 'Error',
+    }),
+  }),
+  onError: (error) => emit('ores-wasm-loader:error', {
+    appId,
+    phase: 'intent-lifecycle',
+    name: error?.name ?? 'Error',
+  }),
+});
 function disposeIntentPreparation() {
-  for (const dispose of disposers) dispose();
-  disposers.clear();
+  intentRegistry.clear();
 }
 function installIntentPreparation() {
-  for (const element of document.querySelectorAll(triggerSelector)) {
-    if (installed.has(element)) continue;
-    installed.add(element);
-    const dispose = prepareOnIntent(element, coordinator, key, {
-      dwellMs: 150,
-      exitGraceMs: 150,
-      onOutcome: (outcome) => emit('ores-wasm-loader:prepared', { appId, outcome }),
-      onError: (error) => emit('ores-wasm-loader:error', {
-        appId,
-        phase: 'prepare',
-        name: error?.name ?? 'Error',
-      }),
-    });
-    disposers.add(dispose);
-  }
+  intentRegistry.refresh();
 }
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', installIntentPreparation, { once: true });
