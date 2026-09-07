@@ -1,0 +1,10 @@
+schemaVersion = "ores.organization-source-of-truth-pointer.v1"
+organization = "sonus-auris"
+authorityRepository = "sonus-auris/.github"
+canonicalPath = "governance/source-of-truth.toml"
+canonicalRevision = 1
+observedAt = "2026-09-07T22:00:45Z"
+status = "unverified"
+mirrorRepository = "sonus-auris/sonus-auris.github.io"
+mirrorMode = "pointer"
+note = "Public claims, privacy/deletion instructions and store-review content must continue to match shipped behavior. Superseded visible direction is preserved in a historical/non-interactive record or linked changelog. Canonical revision 1 is proposed by sonus-auris/.github#39 until validated and digest-verified."
