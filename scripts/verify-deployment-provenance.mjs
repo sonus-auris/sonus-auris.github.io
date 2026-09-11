@@ -21,7 +21,7 @@ assert.deepEqual(
 assert.equal(deployment.schemaVersion, 1);
 
 const expectedRepository = process.env.GITHUB_REPOSITORY?.trim() ||
-  'sonus-auris/sonus-auris-site.web';
+  'sonus-auris/sonus-auris.github.io';
 assert.equal(deployment.repository, expectedRepository);
 assert.match(
   deployment.repository,

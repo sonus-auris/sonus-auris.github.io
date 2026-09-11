@@ -2,7 +2,7 @@ import type { APIRoute } from 'astro';
 
 export const prerender = true;
 
-const defaultRepository = 'sonus-auris/sonus-auris-site.web';
+const defaultRepository = 'sonus-auris/sonus-auris.github.io';
 const repository = process.env.GITHUB_REPOSITORY?.trim() || defaultRepository;
 const rawCommitSha = process.env.GITHUB_SHA?.trim() || '';
 const commitSha = /^[0-9a-f]{40}$/i.test(rawCommitSha)

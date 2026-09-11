@@ -1,8 +1,8 @@
 # public/
 
-Static assets copied verbatim into the build output at the site root. Because
-the site is served from the GitHub Pages subpath `/sonus-auris-site.web`,
-references prefix these with `import.meta.env.BASE_URL`.
+Static assets copied verbatim into the build output at the site root. The
+canonical `sonus-auris.github.io` repository serves from `/`; preview builds
+may still override the base, so references use `import.meta.env.BASE_URL`.
 
 - `favicon.svg` — browser tab icon (referenced in `Base.astro`).
 - `og.svg` — Open Graph / social-share preview image (referenced in `Base.astro`).

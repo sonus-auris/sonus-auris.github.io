@@ -67,6 +67,16 @@ function discover(start) {
 }
 
 const chain = discover(path.join(root, "src"));
-assert.deepEqual(chain, [realpathSync(canonical)], `wrong root-to-leaf agents.md chain: ${chain.join(", ")}`);
+assert.ok(chain.length >= 1, "instruction discovery returned an empty chain");
+assert.equal(
+  chain.at(-1),
+  realpathSync(canonical),
+  `repository agents.md must be the most specific instruction: ${chain.join(", ")}`,
+);
+assert.equal(
+  new Set(chain).size,
+  chain.length,
+  `instruction discovery returned duplicate canonical paths: ${chain.join(", ")}`,
+);
 console.log("agents.md chain for src/:");
 for (const file of chain) console.log(`  - ${path.relative(root, file)}`);

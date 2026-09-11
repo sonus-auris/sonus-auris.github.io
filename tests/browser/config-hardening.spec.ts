@@ -26,6 +26,11 @@ const ORIGIN = `http://127.0.0.1:${PORT}`;
 // Deliberately outside Playwright's `outputDir`, which is wiped and repopulated
 // while the run is in progress.
 const OUT_DIR = resolve(".playwright-hostile-build");
+const FOOTER_SCRIPT_URL =
+  "https://ores-chat.github.io/components/v1/ores-chat-footer-link.js";
+const FOOTER_SCRIPT_INTEGRITY =
+  "sha256-PcjdZ659Rfs/5n5kNR3v/GK4dd0KTyHjh0gY7o/Z/kc=";
+const GENERATED_OWLS_SCRIPT = /^\/_astro\/page\.[A-Za-z0-9_-]+\.js$/;
 
 const HOSTILE_ENV = {
   PUBLIC_APP_STORE_URL: "javascript:alert(document.domain)",
@@ -39,8 +44,11 @@ const HOSTILE_ENV = {
 const CONTENT_TYPES: Record<string, string> = {
   ".css": "text/css; charset=utf-8",
   ".html": "text/html; charset=utf-8",
+  ".js": "text/javascript; charset=utf-8",
   ".json": "application/json; charset=utf-8",
+  ".mjs": "text/javascript; charset=utf-8",
   ".svg": "image/svg+xml",
+  ".wasm": "application/wasm",
   ".woff2": "font/woff2",
 };
 
@@ -182,7 +190,34 @@ test.describe("hostile deployment configuration", () => {
     await expect(
       page.locator('head meta[http-equiv="Content-Security-Policy"]'),
     ).toHaveCount(1);
-    await expect(page.locator("script")).toHaveCount(0);
+
+    const scripts = page.locator("script");
+    await expect(scripts).toHaveCount(2);
+
+    const footerScript = page.locator(`script[src="${FOOTER_SCRIPT_URL}"]`);
+    await expect(footerScript).toHaveCount(1);
+    await expect(footerScript).toHaveAttribute("type", "module");
+    await expect(footerScript).toHaveAttribute(
+      "integrity",
+      FOOTER_SCRIPT_INTEGRITY,
+    );
+    await expect(footerScript).toHaveAttribute("crossorigin", "anonymous");
+    await expect(footerScript).toHaveText("");
+
+    const scriptSources = await scripts.evaluateAll((elements) =>
+      elements.map((element) => element.getAttribute("src") ?? ""),
+    );
+    const owlsSource = scriptSources.find((source) =>
+      GENERATED_OWLS_SCRIPT.test(source),
+    );
+    expect(owlsSource, "hostile build is missing the generated OWLS module").toBeTruthy();
+    const owlsScript = page.locator(`script[src="${owlsSource}"]`);
+    await expect(owlsScript).toHaveCount(1);
+    await expect(owlsScript).toHaveAttribute("type", "module");
+    await expect(owlsScript).not.toHaveAttribute("integrity", /.+/);
+    await expect(owlsScript).not.toHaveAttribute("crossorigin", /.+/);
+    await expect(owlsScript).toHaveText("");
+
     await expect(
       page.locator("footer.footer").getByRole("link", {
         name: "Privacy policy",

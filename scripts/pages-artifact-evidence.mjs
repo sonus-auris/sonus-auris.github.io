@@ -122,7 +122,7 @@ export async function inventoryPagesTree(rootDirectory) {
 }
 
 function deploymentMetadata() {
-  const repository = (process.env.GITHUB_REPOSITORY || 'sonus-auris/sonus-auris-site.web').trim();
+  const repository = (process.env.GITHUB_REPOSITORY || 'sonus-auris/sonus-auris.github.io').trim();
   if (!SAFE_REPOSITORY.test(repository)) {
     throw new Error('GITHUB_REPOSITORY must be an owner/name identifier');
   }

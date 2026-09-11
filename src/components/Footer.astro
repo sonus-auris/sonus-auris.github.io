@@ -46,6 +46,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
       <a href={`${base}/account-deletion/`}>Delete your account &amp; data</a>
       <a href={`${base}/support/`}>Support</a>
       <a href={`${base}/privacy/#recording-responsibly`}>Responsible recording</a>
+      <ores-chat-footer-link context-id="sonus-auris">
+        <a
+          slot="link"
+          href="https://ores-chat.github.io/chat/?context=sonus-auris"
+          rel="noopener noreferrer"
+        >Chat with Sonus Auris</a>
+      </ores-chat-footer-link>
     </nav>
   </div>
 

@@ -13,7 +13,7 @@
 # door, this file can become the canonical header policy without widening the
 # site.
 /*
-  Content-Security-Policy: default-src 'self'; base-uri 'none'; object-src 'none'; script-src 'none'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; media-src 'self' blob:; connect-src 'none'; frame-src 'none'; frame-ancestors 'none'; worker-src 'none'; manifest-src 'self'; form-action 'self'; upgrade-insecure-requests
+  Content-Security-Policy: default-src 'self'; base-uri 'none'; object-src 'none'; script-src 'self' https://ores-chat.github.io; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; media-src 'self' blob:; connect-src 'self'; frame-src 'none'; frame-ancestors 'none'; worker-src 'none'; manifest-src 'self'; form-action 'self'; upgrade-insecure-requests
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   X-Frame-Options: DENY
