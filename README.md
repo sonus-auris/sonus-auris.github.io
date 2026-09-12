@@ -8,15 +8,16 @@
 > On disk: source clone `~/codes/sonus-auris/sonus-auris-site.web` · submodule checkout `~/codes/ores/k8s-cluster/remote/submodules/sonus-auris-site.web`.
 <!-- END k8s-cluster-submodule-notice -->
 
-# sonus-auris-site.web
+# sonus-auris.github.io
 
 Marketing website for **Sonus Auris** — *a dashcam for audio*. An always-on
 recording app that keeps a rolling buffer of your audio and backs it up,
 encrypted, to the cloud. Built for musicians who don't want to lose the riff,
 and for anyone who wants an honest record when memory isn't enough.
 
-Built with [Astro](https://astro.build). No client framework — just fast,
-static HTML/CSS with a little inline SVG animation.
+Built with [Astro](https://astro.build). No client application framework — just
+fast static HTML/CSS, inline SVG animation, and one integrity-pinned,
+framework-neutral ORES Chat footer component.
 
 ## Develop
 

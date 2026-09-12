@@ -10,6 +10,12 @@ import {
   test,
 } from "./fixtures";
 
+const FOOTER_SCRIPT_URL =
+  "https://ores-chat.github.io/components/v1/ores-chat-footer-link.js";
+const FOOTER_SCRIPT_INTEGRITY =
+  "sha256-PcjdZ659Rfs/5n5kNR3v/GK4dd0KTyHjh0gY7o/Z/kc=";
+const GENERATED_OWLS_SCRIPT = /^\/_astro\/page\.[A-Za-z0-9_-]+\.js$/;
+
 test("the covered route list matches every page the build emits", () => {
   const dist = resolve("dist");
   const walk = (directory: string): string[] =>
@@ -77,7 +83,7 @@ for (const route of ROUTES) {
       const policy = (await csp.getAttribute("content")) ?? "";
       for (const directive of [
         "default-src 'self'",
-        "script-src 'none'",
+        "script-src 'self' https://ores-chat.github.io",
         "object-src 'none'",
         "base-uri 'none'",
         "form-action 'self'",
@@ -93,9 +99,35 @@ for (const route of ROUTES) {
         "strict-origin-when-cross-origin",
       );
 
-      // The policy above is only honest if the page really has no scripts or
-      // document-wide base URL override.
-      await expect(page.locator("script")).toHaveCount(0);
+      // The policy above is only honest if the page contains exactly the
+      // integrity-pinned ORES Chat module and the generated same-origin OWLS
+      // module, with no inline executable content or additional script origin.
+      const scripts = page.locator("script");
+      await expect(scripts).toHaveCount(2);
+
+      const footerScript = page.locator(`script[src="${FOOTER_SCRIPT_URL}"]`);
+      await expect(footerScript).toHaveCount(1);
+      await expect(footerScript).toHaveAttribute("type", "module");
+      await expect(footerScript).toHaveAttribute(
+        "integrity",
+        FOOTER_SCRIPT_INTEGRITY,
+      );
+      await expect(footerScript).toHaveAttribute("crossorigin", "anonymous");
+      await expect(footerScript).toHaveText("");
+
+      const scriptSources = await scripts.evaluateAll((elements) =>
+        elements.map((element) => element.getAttribute("src") ?? ""),
+      );
+      const owlsSource = scriptSources.find((source) =>
+        GENERATED_OWLS_SCRIPT.test(source),
+      );
+      expect(owlsSource, `${route} is missing the generated OWLS module`).toBeTruthy();
+      const owlsScript = page.locator(`script[src="${owlsSource}"]`);
+      await expect(owlsScript).toHaveCount(1);
+      await expect(owlsScript).toHaveAttribute("type", "module");
+      await expect(owlsScript).not.toHaveAttribute("integrity", /.+/);
+      await expect(owlsScript).not.toHaveAttribute("crossorigin", /.+/);
+      await expect(owlsScript).toHaveText("");
       await expect(page.locator("base")).toHaveCount(0);
     });
 

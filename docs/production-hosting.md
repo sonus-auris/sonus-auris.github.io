@@ -20,7 +20,7 @@ SONUS_AURIS_SITE_BASE=/
 ```
 
 This is intentionally a custom-domain root deployment, not the historical
-`sonus-auris.github.io/sonus-auris-site.web/` project path.
+`sonus-auris.github.io/` organization-site root.
 
 ## Release verification
 

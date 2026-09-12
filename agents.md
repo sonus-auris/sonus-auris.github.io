@@ -1,4 +1,4 @@
-# Agent guidelines — sonus-auris-site.web
+# Agent guidelines — sonus-auris.github.io
 
 Marketing website and public legal/store-review surface for Sonus Auris.
 

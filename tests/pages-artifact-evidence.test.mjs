@@ -32,7 +32,7 @@ async function fixtureRoot(t) {
   await writeFile(path.join(root, 'index.html'), '<h1>Sonus Auris</h1>\n');
   await writeFile(
     path.join(root, 'deployment.json'),
-    '{"schemaVersion":1,"repository":"sonus-auris/sonus-auris-site.web"}\n',
+    '{"schemaVersion":1,"repository":"sonus-auris/sonus-auris.github.io"}\n',
   );
   await writeFile(
     path.join(root, '.well-known', 'security.txt'),
@@ -94,7 +94,7 @@ test('evidence is written outside the deployed tree with no secret-shaped fields
   const priorRepository = process.env.GITHUB_REPOSITORY;
   const priorSha = process.env.GITHUB_SHA;
   const priorRef = process.env.GITHUB_REF_NAME;
-  process.env.GITHUB_REPOSITORY = 'sonus-auris/sonus-auris-site.web';
+  process.env.GITHUB_REPOSITORY = 'sonus-auris/sonus-auris.github.io';
   process.env.GITHUB_SHA = 'a'.repeat(40);
   process.env.GITHUB_REF_NAME = 'main';
   t.after(() => {

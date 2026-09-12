@@ -21,7 +21,7 @@ assert.deepEqual(
 assert.equal(deployment.schemaVersion, 1);
 
 const expectedRepository = process.env.GITHUB_REPOSITORY?.trim() ||
-  'sonus-auris/sonus-auris-site.web';
+  'sonus-auris/sonus-auris.github.io';
 assert.equal(deployment.repository, expectedRepository);
 assert.match(
   deployment.repository,
@@ -34,9 +34,17 @@ const expectedCommitSha = /^[0-9a-f]{40}$/i.test(rawCommitSha)
   ? rawCommitSha.toLowerCase()
   : null;
 assert.equal(deployment.commitSha, expectedCommitSha);
+const requestedBuildEnvironment =
+  process.env.SONUS_AURIS_BUILD_ENVIRONMENT?.trim() || '';
+const expectedBuildEnvironment =
+  requestedBuildEnvironment || (expectedCommitSha ? 'github-actions' : 'local');
+assert.ok(
+  ['local', 'github-actions', 'production'].includes(expectedBuildEnvironment),
+  'SONUS_AURIS_BUILD_ENVIRONMENT must be local, github-actions, or production',
+);
 assert.equal(
   deployment.buildEnvironment,
-  expectedCommitSha ? 'github-actions' : 'local',
+  expectedBuildEnvironment,
 );
 
 const expectedRefName = process.env.GITHUB_REF_NAME?.trim() ||
