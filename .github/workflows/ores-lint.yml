@@ -1,0 +1,34 @@
+name: ores-lint
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out exact source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js 22
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: "22"
+
+      - name: Install global lint hosts
+        run: npm i -g eslint typescript-eslint
+
+      - name: Run vendored ores-lint
+        run: sh .ores-lint/lint.sh
+        env:
+          ORES_LINT_STRICT: "0"
+          ORES_LINT_SKIP_RUST: "1"
+          ORES_LINT_SKIP_DART: "1"
+          ORES_LINT_SKIP_GLEAM: "1"
