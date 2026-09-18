@@ -1,4 +1,5 @@
 name: dependency security lock materialization
+# Exact-head retrigger after generated lock materialization.
 
 on:
   pull_request:
