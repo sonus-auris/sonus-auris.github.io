@@ -1,0 +1,49 @@
+name: dependency security lock materialization
+# Exact-head retrigger after generated lock materialization.
+
+on:
+  pull_request:
+    paths:
+      - "package.json"
+      - "package-lock.json"
+      - ".github/workflows/dependency-security-lock.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out exact PR head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: true
+
+      - name: Set up Node.js 22
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: "22"
+
+      - name: Regenerate lockfile from package.json
+        run: npm install --package-lock-only --ignore-scripts
+
+      - name: Reject high or critical advisories
+        run: npm audit --audit-level=high
+
+      - name: Commit generated lockfile to this PR
+        if: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository }}
+        run: |
+          set -euo pipefail
+          git add package-lock.json
+          if git diff --cached --quiet; then
+            echo "package-lock.json already current"
+          else
+            git config user.name "ores-dependency-bot"
+            git config user.email "ores-dependency-bot@users.noreply.github.com"
+            git commit -m "chore(security): regenerate npm lockfile"
+            git push origin "HEAD:${{ github.head_ref }}"
+          fi
