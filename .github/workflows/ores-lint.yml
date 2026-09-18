@@ -25,6 +25,11 @@ jobs:
       - name: Install global lint hosts
         run: npm i -g eslint typescript-eslint
 
+      - name: Verify vendored lint toolkit
+        run: sh .ores-lint/selftest.sh
+        env:
+          ORES_LINT_SKIP_RUST: "1"
+
       - name: Run vendored ores-lint
         run: sh .ores-lint/lint.sh
         env:
